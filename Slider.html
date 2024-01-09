@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infinite Slider</title>
+  <style>
+    #slider-container {
+      overflow: hidden;
+      position: relative;
+      width: 300px;
+      margin: 0 auto;
+    }
+
+    #slider-wrapper {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slide {
+      flex: 0 0 100%;
+      box-sizing: border-box;
+    }
+
+    #prev, #next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    #prev { left: 10px; }
+    #next { right: 10px; }
+  </style>
+</head>
+<body>
+
+<div id="slider-container">
+  <div id="slider-wrapper">
+    <div class="slide">1</div>
+    <div class="slide">2</div>
+    <div class="slide">3</div>
+    <div class="slide">4</div>
+    <div class="slide">5</div>
+    <div class="slide">6</div>
+    <div class="slide">7</div>
+    <div class="slide">8</div>
+    <div class="slide">9</div>
+    <div class="slide">10</div>
+
+    <!-- Add more slides as needed -->
+  </div>
+  <div id="prev">&lt;</div>
+  <div id="next">&gt;</div>
+</div>
+
+<script>
+  const sliderWrapper = document.getElementById('slider-wrapper');
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+
+  let currentIndex = 0;
+
+  function updateSlider() {
+    const newTransformValue = -currentIndex * 100 + '%';
+    sliderWrapper.style.transform = `translateX(${newTransformValue})`;
+  }
+
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateSlider();
+  }
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateSlider();
+  }
+
+  prevBtn.addEventListener('click', prevSlide);
+  nextBtn.addEventListener('click', nextSlide);
+</script>
+
+</body>
+</html>
