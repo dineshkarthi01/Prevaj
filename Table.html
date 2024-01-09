@@ -1,1 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table with Sort and Pagination</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<table id="myTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">ID</th>
+            <th onclick="sortTable(1)">Name</th>
+            <th onclick="sortTable(2)">Age</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Sample data rows -->
+    </tbody>
+</table>
+
+<div id="pagination"></div>
+
+<script>
+    // Sample data for pagination
+    const data = [
+        { id: 1, name: 'John Doe', age: 25 },
+        { id: 2, name: 'Jane Doe', age: 27 },
+        { id: 3, name: 'Jane', age: 17 },
+        { id: 4, name: 'James', age: 64 },
+        { id: 5, name: 'sarah', age: 36 },
+        { id: 6, name: 'Abd', age: 34 },
+        { id: 7, name: 'Willam', age: 21 },
+        { id: 8, name: 'Abraham', age: 45 },
+        { id: 9, name: 'smith', age: 56 },
+        { id: 10, name: 'wane', age: 23 },
+        { id: 11, name: 'RDJ', age: 45 },
+        { id: 12, name: 'ethan', age: 89 },
+        { id: 13, name: 'hunt', age: 24 },
+        { id: 14, name: 'wick', age: 22 },
+        { id: 15, name: 'Paradine', age: 20 },
+        { id: 16, name: 'michael', age: 43 },
+        { id: 17, name: 'spiereg', age: 31 },
+        { id: 18, name: 'wanda', age: 34 },
+        { id: 19, name: 'Lord', age: 27 },
+        { id: 20, name: 'king', age: 32 },
+    ];
+
+    const itemsPerPage = 5;
+    let currentPage = 1;
+    let sortColumnIndex = 0; // Default sort column
+
+    function renderTable(page) {
+        const tableBody = document.querySelector('#myTable tbody');
+        tableBody.innerHTML = '';
+
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedData = data.slice(start, end);
+
+        paginatedData.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${item.id}</td><td>${item.name}</td><td>${item.age}</td>`;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function renderPagination() {
+        const totalPages = Math.ceil(data.length / itemsPerPage);
+        const pagination = document.querySelector('#pagination');
+        pagination.innerHTML = '';
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.innerText = i;
+            button.addEventListener('click', () => {
+                currentPage = i;
+                renderTable(currentPage);
+                renderPagination();
+            });
+            pagination.appendChild(button);
+        }
+    }
+
+    function sortTable(columnIndex) {
+        if (sortColumnIndex === columnIndex) {
+            // If clicking on the same column, reverse the sorting order
+            data.reverse();
+        } else {
+            // Set the new sort column and sort the data
+            sortColumnIndex = columnIndex;
+            data.sort((a, b) => a[Object.keys(a)[columnIndex]] - b[Object.keys(b)[columnIndex]]);
+        }
+
+        renderTable(currentPage);
+        renderPagination();
+    }
+
+    // Initial render
+    renderTable(currentPage);
+    renderPagination();
+</script>
+
+</body>
+</html>
 
